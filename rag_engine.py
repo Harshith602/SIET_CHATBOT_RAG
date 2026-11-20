@@ -4,6 +4,7 @@ from groq import Groq
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
 
+
 # Load PDFs
 def load_pdf(pdf_path):
     reader = PdfReader(str(pdf_path))
@@ -11,7 +12,7 @@ def load_pdf(pdf_path):
     full_text = "\n".join(mypages).strip()
 
     if not full_text:
-        raise ValueError("No readable Text Found")
+        raise ValueError("No readable text found")
 
     return full_text
 
@@ -65,7 +66,7 @@ def retrieve_content(question, embed_model, chunks, index, num_chunks=3):
         raise ValueError("Question cannot be blank")
 
     if num_chunks < 1:
-        raise ValueError("Request at least one or more chunks")
+        raise ValueError("Request at least one chunk")
 
     query_embed = embed_model.encode([question], convert_to_numpy=True)
     query_embed = np.asarray(query_embed, dtype="float32")
@@ -86,13 +87,20 @@ def retrieve_content(question, embed_model, chunks, index, num_chunks=3):
 
 
 # Ask
-def ask_rag(question, embed_model, chunks, index, api_key, num_chunks=3,
-            model_name="openai/gpt-oss-120b"):
+def ask_rag(
+    question,
+    embed_model,
+    chunks,
+    index,
+    api_key,
+    num_chunks=3,
+    model_name="openai/gpt-oss-120b"
+):
 
     key = api_key
 
     if not key:
-        raise ValueError("API key Missing")
+        raise ValueError("API key missing")
 
     background = retrieve_content(
         question, embed_model, chunks, index, num_chunks
