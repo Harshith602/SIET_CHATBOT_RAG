@@ -1,4 +1,4 @@
- streamlit
+streamlit
 pypdf
 sentence-transformer
 faiss-cpu
